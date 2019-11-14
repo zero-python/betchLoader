@@ -24,12 +24,21 @@ result_pd = session.read_sql(sql=sql, to_DataFrame=True)  # 返回查询结果�
 
 ```
 ### 2 batchDecorator batchLoader
-主要核心模块，将pandas数据导入文件，利用mysqlManager作为数据导入的引擎，load file的方式导入文件。该方式进程中事安全的，但是多线程慎用。
+主要思想：利用mysql的load file的效率是最快的，将pandas数据写入文件，再load进数据库，减少数据处理及io读写。
+
 #### 使用注意事项：
 #### 1，pandas结构的列名需要对应导入数据表的列名。
 #### 2，在多线程中慎用。
 
+### batchLoader
+负责多进程/单进程创建，删除文件及load file导入数据落地
 
+### batchUpLoad
+负责将dataframe数据迭代写入文件
+
+### 两种测试案例：
+
+1, 庞大的单个dataframe使用。
 ```python
 from manager.batchDecorator import batchUpLoad
 from manager.batchLoader import batchLoader
@@ -41,6 +50,7 @@ with batchLoader(session): # 传入session对象
     batchUpLoad(result_pd, 'table_name')  # result_pd数据源，table_name对应的表名
 ```
 
+2，多个dataframe迭代写入文件后，组成最终的导入数据。
 ```python
 from manager.batchDecorator import batchUpLoad
 from manager.batchLoader import batchLoader
