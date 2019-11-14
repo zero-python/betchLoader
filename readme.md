@@ -25,9 +25,9 @@ result_pd = session.read_sql(sql=sql, to_DataFrame=True)  # 返回查询结果�
 ```
 ### 2 batchDecorator batchLoader
 主要核心模块，将pandas数据导入文件，利用mysqlManager作为数据导入的引擎，load file的方式导入文件。该方式进程中事安全的，但是多线程慎用。
-使用注意事项：
-1，pandas结构的列名需要对应导入数据表的列名。
-2，在多线程中慎用。
+#### 使用注意事项：
+#### 1，pandas结构的列名需要对应导入数据表的列名。
+#### 2，在多线程中慎用。
 
 
 ```python
